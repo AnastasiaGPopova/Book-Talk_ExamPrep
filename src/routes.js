@@ -16,6 +16,7 @@ const {isAuthenticated} = require('./middlewares/authMiddleware.js')
 
 router.get('/', homeController.getHomePage)
 router.get('/catalog', homeController.getCatalogPage)
+router.get('/profile', homeController.getProfilePage)
 
 
 //Login and Register
@@ -36,12 +37,12 @@ router.get('/:bookId/details', bookController.getDetails)
 router.get('/:bookId/wish', isAuthenticated, bookController.wish)
 // // router.get('/post/:postId/voteDown', isAuthenticated, postController.voteDown)
 
-// //Edit page
-// router.get('/:houseId/edit', isAuthenticated, bookController.getEditPage)
-// router.post('/:houseId/edit', isAuthenticated, bookController.postEditedHouse)
+//Edit page
+router.get('/:bookId/edit', isAuthenticated, bookController.getEditPage)
+router.post('/:bookId/edit', isAuthenticated, bookController.postEditedBook)
 
-// // //Delete post
-// router.get('/:houseId/delete', isAuthenticated, bookController.getDeleteHouse)
+//Delete book
+router.get('/:bookId/delete', isAuthenticated, bookController.getDeleteBook)
 
 // // //search
 // router.get('/search', isAuthenticated, bookController.getSearchPage)
@@ -49,8 +50,8 @@ router.get('/:bookId/wish', isAuthenticated, bookController.wish)
 
 
 router.get('/logout', isAuthenticated, authController.logout)
-// router.get('*', homeController.getErrorPage404)
-// router.get('/404', homeController.getErrorPage404)
+router.get('*', homeController.getErrorPage404)
+router.get('/404', homeController.getErrorPage404)
 
 
 

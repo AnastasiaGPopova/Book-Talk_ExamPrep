@@ -84,47 +84,48 @@ exports.wish = async (req,res) =>{
 }
 
 
-// exports.getEditPage = async (req,res) => {
-//     const currentHouse = await housingService.getOneHouse(req.params.houseId).populate('owner').lean()
-//     const isOwner = houseUtility.isHouseOwner(req.user, currentHouse)
+exports.getEditPage = async (req,res) => {
+    const currentBook = await bookService.getOne(req.params.bookId).populate('owner').lean()
+    const isOwner = bookUtility.isBookOwner(req.user, currentBook)
 
-//     if(!isOwner){
-//         res.redirect('/')
-//     } else {
-//         res.render('edit', {currentHouse})
-//     }
-// }
-
-
-
-// exports.postEditedHouse = async (req,res) => {
-//     const {name, type, year, city, imageUrl, description, prices} = req.body
-//     try{
-//         if(!name || !type || !year || !city || !imageUrl || !description || !prices){
-//             throw new Error ("All fields are requiered!")
-//         }
-//         const updatedHouse = await housingService.update(req.params.houseId,{name, type, year, city, imageUrl, description, prices} )//encoded body-to, which we receive, will create a new cube
-
-//         res.redirect(`/${req.params.houseId}/details`)
-
-//     } catch(error){
-//         const errors = parser.parseError(error)
-//         res.render(`edit`, {errors})
-//     }
-// }
+    if(!isOwner){
+        res.redirect('/')
+    } else {
+        res.render('edit', {currentBook})
+    }
+}
 
 
-// exports.getDeleteHouse= async (req, res) => {
-//     const house = await housingService.getOneHouse(req.params.houseId).populate('owner').lean()
-//     const isOwner = houseUtility.isHouseOwner(req.user, house)
 
-//     if(!isOwner){
-//         res.redirect('/')
-//     } else {
-//    const test = await housingService.deleteHouse(req.params.houseId)
-//    res.redirect('/')
-//     }
-// }
+exports.postEditedBook = async (req,res) => {
+    const {title, author, genre, stars, imageUrl, bookReview} = req.body
+
+    try{
+        if(!title || !author || !stars || !imageUrl || !bookReview){
+            throw new Error ("All fields are requiered!")
+        }
+        const updatedBook = await bookService.update(req.params.bookId,{title, author, genre, stars, imageUrl, bookReview} )//encoded body-to, which we receive, will create a new cube
+
+        res.redirect(`/${req.params.bookId}/details`)
+
+    } catch(error){
+        const errors = parser.parseError(error)
+        res.render(`edit`, {errors})
+    }
+}
+
+
+exports.getDeleteBook= async (req, res) => {
+    const book = await bookService.getOne(req.params.bookId).populate('owner').lean()
+    const isOwner = bookUtility.isBookOwner(req.user, book)
+
+    if(!isOwner){
+        res.redirect('/')
+    } else {
+   const test = await bookService.delete(req.params.bookId)
+   res.redirect('/catalog')
+    }
+}
 
 // exports.getSearchPage = async (req,res) => {
 
